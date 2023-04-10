@@ -9,9 +9,6 @@ sql_user = "root"
 sql_password = "root"  # local
 
 
-# sql_password = "discount777"  # server
-
-
 def connect():
     conn_f = mysql.connector.connect(host=sql_host, user=sql_user, password=sql_password, database=sql_db)
     return conn_f
@@ -67,9 +64,12 @@ def db_init():
                    "number SMALLINT,"
                    "info TEXT,"
                    "question TEXT,"
-                   "answers TEXT,"
-                   "correct_answer TEXT,"
                    "PRIMARY KEY (learning_id)"
+                   ")")
+    cursor.execute("CREATE TABLE IF NOT EXISTS answers("
+                   "learning_id INT,"
+                   "answer TEXT,"
+                   "is_correct BOOLEAN DEFAULT FALSE"
                    ")")
     conn.commit()
     cursor.close()
@@ -122,7 +122,7 @@ def get_learn_state(user_id, what_get):
     try:
         cursor = get_cursor()
         cursor.execute(f"SELECT {what_get}_learn_state FROM users WHERE user_id=%s", (user_id,))
-        position = cursor.fetchone()
+        position = cursor.fetchone()[0]
         return position
     except Exception as e:
         print(e)
@@ -139,9 +139,36 @@ def get_learn(company_id, what_get, number):
     global conn
     try:
         cursor = get_cursor()
-        cursor.execute(f"SELECT company_id, info, question, answer, correct_answer FROM users "
+        cursor.execute(f"SELECT learning_id, company_id, info, question, correct_answer FROM learning "
                        f"WHERE company_id=%s AND learn_type=%s AND number=%s", (company_id, what_get, number))
         position = cursor.fetchone()
+        return position
+    except Exception as e:
+        print(e)
+        return False
+
+
+def get_last_state(company_id, what_get):
+    global conn
+    try:
+        cursor = get_cursor()
+        cursor.execute(f"SELECT number FROM learning "
+                       f"WHERE company_id=%s AND learn_type=%s "
+                       f"ORDER BY number DESC LIMIT 1",
+                       (company_id, what_get))
+        position = cursor.fetchone()[0]
+        return position
+    except Exception as e:
+        print(e)
+        return False
+
+
+def get_answers(learning_id):
+    global conn
+    try:
+        cursor = get_cursor()
+        cursor.execute(f"SELECT answer, is_correct FROM answers WHERE learning_id=%s", (learning_id,))
+        position = cursor.fetchall()
         return position
     except Exception as e:
         print(e)

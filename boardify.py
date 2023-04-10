@@ -9,9 +9,7 @@ from keyboard import *
 from functions import *
 from config import *
 
-bot = telebot.TeleBot("6036111995:AAFnqTm4Llx3xrMaL5NlDwwP-P_izRqzFpM", parse_mode="HTML")  # server
-kf = 3
-kf_i = 2
+bot = telebot.TeleBot("TOKEN", parse_mode="HTML")  # server
 
 
 @bot.message_handler(commands=['start'])
@@ -58,9 +56,9 @@ def i_get_message(message):
             learn_type = "company"
         else:
             return
-        position_learn_state = get_learn_state(user_id, position_learn_state)
-        company_state = get_learn_state(user_id, learn_type)
-        info = get_learn(company_id, "position", position_learn_state)
+        to_send, keyboard = build_learn(user_id, company_id, learn_type)
+        bot.send_message(user_id, to_send, reply_markup=keyboard)
+
 
 def mailing(message):
     chat_id = message.chat.id
@@ -80,6 +78,46 @@ def mailing(message):
         except:
             pass
     bot.send_message(chat_id, "Рассылка завершена!")
+
+
+def build_learn(user_id, company_id, learn_type, base=True):
+    state_num = get_learn_state(user_id, learn_type)
+    last_state = get_last_state(user_id, learn_type)
+    learning_id, company_id, info, question, correct_answer = get_learn(company_id, "position", state_num)
+    answers = get_answers(learning_id)
+    send_text = ""
+    keyboard = InlineKeyboardMarkup()
+    if state_num:
+        if base:
+            send_text += f"Задание {state_num}.\n\n{info}"
+            if answers:
+                if state_num != 1:
+                    keyboard.add(InlineKeyboardButton("⬅", callback_data=f"go_task {state_num - 1}"),
+                                 InlineKeyboardButton("❓", callback_data=f"go_question {state_num}"))
+                else:
+                    keyboard.add(InlineKeyboardButton("❓", callback_data=f"go_question {state_num}"))
+            else:
+                if state_num != 1:
+                    if state_num != last_state:
+                        keyboard.add(InlineKeyboardButton("⬅", callback_data=f"go_task {state_num - 1}"),
+                                     InlineKeyboardButton("➡", callback_data=f"go_task {state_num + 1}"))
+                    else:
+                        keyboard.add(InlineKeyboardButton("⬅", callback_data=f"go_task {state_num - 1}"),
+                                     InlineKeyboardButton("🏁", callback_data=f"finish"))
+                else:
+                    keyboard.add(InlineKeyboardButton("➡", callback_data=f"go_task {state_num + 1}"))
+        else:
+            send_text += f"Вопрос к заданию {state_num}.\n\n{question}"
+            mas = []
+            for num, i in enumerate(answers):
+                mas.append(InlineKeyboardButton(i[0], callback_data=f"check_answer {i[1]}"))
+                if num % 3 == 0 and num != 0:
+                    keyboard.add(*mas)
+                    mas = []
+            keyboard.add(*mas)
+    else:
+        send_text = "Заданий ещё нет"
+    return send_text, keyboard
 
 
 while True:
