@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="static/css/style.css">
+    <title>Boardify - Create</title>
+  </head>
+  <a href="/">Назад</a>
+  {{err}}
+  <body>
+  {% if is_entered %}
+  <p>Введите пригласительный код</p>
+  <form method="post">
+    <input type="text" name="code" placeholder="fca61000d4b4d2e21bbe4ef3596ec500df9ba960db10e8eca2" autocomplete="False"><br>
+    <button onclick="Submit">Присоединиться</button>
+  </form>
+  {% else %}
+  <script>window.location.href = "/";</script>
+  {% endif %}
+  </body>
+</html>

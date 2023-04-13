@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Boardify - Login</title>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="static/css/style.css">
+  </head>
+  <body>
+  <a href="/">Назад</a>
+  {{ err }}
+  {% if not is_entered %}
+  <form method="post">
+    <input type="email" name="email" placeholder="example@mail.ru" autocomplete="False"><br>
+    <input type="password" name="password" placeholder="Password" autocomplete="False"><br>
+    <button onclick="Submit">Вход</button>
+  </form>
+  {% else %}
+  <script>window.location.href = "/";</script>
+  {% endif %}
+  </body>
+</html>

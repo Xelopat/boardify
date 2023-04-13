@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Upload files</title>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="/static/script.js"></script>
+</head>
+<body>
+<a href="/">Назад</a><br>
+{% if message %}
+
+<div id="customAlert">
+    <div id="customAlertBox">
+        <div id="customAlertTitle"></div>
+        <div id="customAlertText"></div>
+        <div id="customAlertButton" onclick="closeCustomAlert()">OK</div>
+    </div>
+</div>
+<script>
+    history.pushState({}, '', window.location.pathname);
+    showAlert("{{ message[0] }}", "{{ message[1] }}");
+
+
+
+</script>
+{% endif %}
+<div style="width:30%;margin: 0 auto;text-align: center;margin-top:10%; display: flex; justify-content: center; align-items: center;">
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" id="file-input" name="file" multiple required accept=".jpg,.jpeg,.png,.gif,.bmp,.svg,.mp4,
+        .avi,.mov,.wmv,.flv,.mpeg,.mp3,.wav,.ogg,.aac,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.rtf">
+        <button>Загрузить файлы</button>
+    </form>
+</div>
+<script>
+
+  const fileInput = document.querySelector('#file-input');
+  const selectedFilesDiv = document.querySelector('#selected-files');
+
+  fileInput.addEventListener('change', (event) => {
+    const fileList = event.target.files;
+    const fileNames = Array.from(fileList).map((file) => file.name);
+    selectedFilesDiv.innerText = `${fileNames.join(', ')}`;
+  });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid black;
+}
+
+th, td {
+  padding: 20px;
+  border: 1px solid black;
+}
+
+.rounded-input {
+  padding:10px;
+  border-radius:10px;
+}
+
+
+* {
+  box-sizing:border-box;
+}
+body {
+  margin:20px;
+
+  font-size: 1.2rem;
+  font-family: sans-serif;
+  background-image: url("/static/background.jpg");
+  background-size: cover;
+  z-index: -1;
+}
+textarea {
+  width:100%;
+  resize: vertical;
+  padding:15px;
+  border-radius:15px;
+  border:0;
+  box-shadow:4px 4px 10px rgba(0,0,0,0.06);
+  height:100%;
+  font-family:inherit;
+  font-size: inherit;
+}
+select {
+  width: 80%;
+  height: 80%;
+  padding:10px;
+  border-radius:15px;
+  margin-top: 5px;
+  display:block;
+  padding:20px;
+  font-family:inherit;
+  font-size: inherit;
+}
+button {
+
+  display: inline-block;
+  background-color: #FFB57A; /* оранжевый цвет */
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  height: 40px;
+  weight: 40px;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  margin-right: 10px; /* добавляем отступ между элементами */
+  margin-top: 10px; /* добавляем отступ между элементами */
+  margin-bottom: 5px; /* добавляем отступ между элементами */
+}
+
+button:last-of-type {
+  margin-right: 0; /* убираем отступ для последнего элемента */
+}
+
+button:hover {
+  background-color: #FFA564; /* более яркий оранжевый цвет */
+}
+
+button:active {
+  background-color: #FF8F3F; /* еще более яркий оранжевый цвет */
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #FFB57A;
+}
+
+* {
+  box-sizing: border-box;
+}
+input {
+border-radius:10px;
+  display:block;
+  width:100%;
+  padding:20px;
+  margin-top: 10px;
+  font-family:inherit;
+  font-size: inherit;
+}
+
+a {
+  display: inline-block;
+  background-color: #FFB57A; /* оранжевый цвет */
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  margin-right: 10px; /* добавляем отступ между элементами */
+  margin-top: 10px; /* добавляем отступ между элементами */
+  margin-bottom: 5px; /* добавляем отступ между элементами */
+}
+
+a:last-of-type {
+  margin-right: 0; /* убираем отступ для последнего элемента */
+}
+
+a:hover {
+  background-color: #FFA564; /* более яркий оранжевый цвет */
+}
+
+a:active {
+  background-color: #FF8F3F; /* еще более яркий оранжевый цвет */
+}
+
+a:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+
+a:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #FFB57A;
+}
+input[type=checkbox] {
+    margin-left: -30%;
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 10%;
+  height: 10%;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type=checkbox]::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: orange;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+input[type=checkbox]:checked::before {
+  opacity: 1;
+}
+
+
+#customAlert {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#customAlertBox {
+  background-color: #fff;
+  border-radius: 5px;
+  width: 300px;
+  position: relative;
+  margin: auto;
+  padding: 20px;
+  top: 20%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+#customAlertTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#customAlertText {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#customAlertButton {
+  background-color: #f44336;
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+#customAlertButton:hover {
+  background-color: #ff5b4f;
+}
+input[type="file"][name="file"][multiple] {
+  background-color: #FF8F3F;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  width: 400px;
+}

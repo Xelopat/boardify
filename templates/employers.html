@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>Employers</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="icon" href="static/icon.png">
+</head>
+<a href="/">Назад</a>
+<body>
+
+<ol>
+    {%for i in range(0, len)%}
+    <div style="width:40%;margin: 0 auto;">
+        <li>
+            <a target="_blank" href="https://t.me/{{users[i][1]}}" style="display: inline;">@{{users[i][1]}}</a>
+            <a href="/chat?user={{users[i][0]}}" style="display: inline;" id="{{users[i][0]}}">Чат</a>
+            <table style="border:0px">
+                <tr>
+                    <td style="border:0px">Обучение должности:</td>
+                    <td style="border:0px">
+                        <progress id="position" max="100" value={{percents[i][0]}}> {{ percents[i][0] }}</progress>
+                        {{ percents[i][0] }}%
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:0px">Знакомство с сотрудниками:</td>
+                    <td style="border:0px">
+                        <progress id="users" max="100" value={{percents[i][1]}}> {{ percents[i][1] }}</progress>
+                        {{ percents[i][1] }}%
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:0px">Анализ продуктов:</td>
+                    <td style="border:0px">
+                        <progress id="products" max="100" value={{percents[i][2]}}> {{ percents[i][2] }}</progress>
+                        {{ percents[i][2] }}%
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:0px">О компании:</td>
+                    <td style="border:0px">
+                        <progress id="company" max="100" value={{percents[i][3]}}> {{ percents[i][3] }}</progress>
+                        {{ percents[i][3] }}%
+                    </td>
+                </tr>
+            </table>
+        </li>
+    </div>
+    {%endfor%}
+
+</ol>
+<script>
+let users = {{ users_json|tojson }};
+check_new()
+setInterval(function() {
+    check_new()
+  }, 3000);
+function check_new(){
+let xhr = new XMLHttpRequest(); // Создаем экземпляр объекта XMLHttpRequest
+    for (var i = 0; i < users.length; i++) {
+    let cur_user = users[i];
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', '/check_new_message', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+        console.log(users[i])
+          if (xhr.responseText != "no"){
+                let data = JSON.parse(xhr.responseText);
+                document.getElementById(cur_user).innerHTML = "Чат (новое сообщение)";
+            }
+            else{
+                document.getElementById(cur_user).innerHTML = "Чат";
+            }
+        };
+        let params = 'user_id=' + cur_user + '&read=no';
+        xhr.send(params);
+  }
+}
+
+</script>
+</body>
+</html>

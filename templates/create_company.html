@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="static/css/style.css">
+    <title>Boardify - Create</title>
+  </head>
+  <a href="/">Назад</a>
+  {{err}}
+  <body>
+  {% if is_entered %}
+  <form method="post">
+    <input type="text" name="company" placeholder="ООО Хвосты и лапы" autocomplete="False"><br>
+    <button onclick="Submit">Создать</button>
+  </form>
+  {% else %}
+  <script>window.location.href = "/";</script>
+  {% endif %}
+  </body>
+</html>

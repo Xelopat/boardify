@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>Mailing</title>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="/static/script.js"></script>
+</head>
+<body>
+<a href="/">Назад</a><br>
+{% if message %}
+
+<div id="customAlert">
+  <div id="customAlertBox">
+    <div id="customAlertTitle"></div>
+    <div id="customAlertText"></div>
+    <div id="customAlertButton" onclick="closeCustomAlert()">OK</div>
+  </div>
+</div>
+<script>
+    history.pushState({}, '', window.location.pathname);
+    showAlert("{{ message[0] }}", "{{ message[1] }}");
+</script>
+{% endif %}
+<div style="width:30%;margin: 0 auto;text-align: center;margin-top:10%">
+    <form method="post">
+        <textarea placeholder="Введите сообщение" name="text" style="height: 20%"></textarea><br>
+        <button onclick="Submit">Отправить всем сотрудникам</button>
+    </form>
+</div>
+</body>
+</html>

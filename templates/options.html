@@ -1,0 +1,247 @@
+<html>
+<head>
+    <title>Boardify - Options</title>
+</head>
+<link rel="stylesheet" href="static/css/style.css">
+<script src="/static/script.js"></script>
+<link rel="icon" href="static/icon.png">
+<body>
+{% if message %}
+
+<div id="customAlert">
+    <div id="customAlertBox">
+        <div id="customAlertTitle"></div>
+        <div id="customAlertText"></div>
+        <div id="customAlertButton" onclick="closeCustomAlert()">OK</div>
+    </div>
+</div>
+<script>
+    history.pushState({}, '', window.location.pathname);
+    showAlert("{{ message[0] }}", "{{ message[1] }}");
+
+
+
+</script>
+{% endif %}
+{% if edit %}
+<a href="/options">Назад</a><br>
+<form method="POST">
+    <table style="table" id="table">
+        {% if mas %}
+
+        {%for i in range(0, mas|length) %}
+
+        <tr>
+            <th style="width:80px">
+                <button onclick="del_info(this)" type="button">-</button>
+            </th>
+            <th style="width:40%;"><textarea style="resize:vertical;width:100%;height:100%;" name="{{i}}" rows="5"
+                                             cols="90">{{mas[i][1]}}</textarea>
+                <select name="{{i}}f">
+                    <option value="-1">Файл не выбран</option>
+                    {%for c_f in range(0, all_files|length) %}
+                    <option value="{{all_files[c_f][0]}}"
+                    "{% if all_files[c_f][0] == mas[i][4][0] %} selected {%endif%}"> {{all_files[c_f][1]}} </option>
+                    {%endfor%}
+                </select>
+            </th>
+            <th>
+                <table style="table;border=1px">
+                    {% if mas[i][3] %}
+
+                    {%for q in range(0, mas[i][3]|length) %}
+                    <tr>
+                        <th style="width:80px">
+                            <button onclick="del_question(this)" type="button">-</button>
+                        </th>
+                        <th align="left"><textarea style="resize:vertical;width:100%;height:100%;"
+                                                   name="{{i}}_{{q}}"
+                                                   rows="3"
+                                                   cols="30">{{mas[i][3][q][1]}}</textarea>
+
+                        </th>
+                        <th>
+                            <table style="table;border=1px">
+                                {%for a in range(0, mas[i][3][q][2]|length) %}
+                                <tr align="left">
+                                    <th style="width:80px">
+                                        <button onclick="del_answer(this)" type="button">-</button>
+                                    </th>
+                                    <th style="width:65%"><textarea style="resize:vertical;width:100%"
+                                                                    name="{{i}}_{{q}}_{{a}}"
+                                                                    rows="2"
+                                                                    cols="30">{{mas[i][3][q][2][a][1]}}</textarea>
+                                    </th>
+                                    <th>
+                                        <input type="checkbox" "{% if mas[i][3][q][2][a][2] %} checked {%endif%}"
+                                        name="{{i}}_{{q}}_{{a}}_1">
+                                    </th>
+                                </tr>
+                                {%endfor%}
+                                <tr>
+                                    <th style="width:80px" align="left">
+                                        <button onclick="new_answer(this)" type="button">+</button>
+                                    </th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </table>
+                        </th>
+                    </tr>
+                    {%endfor%}
+                    {% endif %}
+                    <tr>
+                        <th style="width:80px">
+                            <button onclick="new_question(this)" type="button">+</button>
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </table>
+            </th>
+        </tr>
+        {%endfor%}
+        {% endif %}
+        <tr>
+            <th style="width:80px">
+                <button onclick="new_info(this)" type="button">+</button>
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </table>
+    <br>
+    <button type="Submit" style="display: block;margin: 0 auto;width:40%;">Сохранить</button>
+</form>
+{% else %}
+<a href="/">Назад</a><br>
+<div style="width: 50%;margin: 0 auto;margin-top: 4%;">
+    <table style="border:0px">
+        <tr style="border:0px;vertical-align: top;">
+            <th style="border:0px;vertical-align: top;">
+                <h3>Редактировать задачи</h3>
+                <form method="get">
+                    <p style="text-align: left;">Что редактируем</p>
+                    <select name="edit">
+                        <option value="position">Должность</option>
+                        <option value="users">Сотрудники</option>
+                        <option value="products">Продукты компании</option>
+                        <option value="company">О компании</option>
+                    </select>
+                    <p style="text-align: left;">Кому редактируем</p>
+                    <select name="position_id">
+                        <option value="-1">Общее</option>
+                        {%for i in range(0, positions|length) %}
+                        <option value="{{ positions[i][0] }}">{{ positions[i][1] }}</option>
+                        {%endfor%}
+                    </select><br><br>
+                    <button onclick="Submit">Далее</button>
+                </form>
+            </th>
+            <th style="border:0px;vertical-align: top;">
+                <h3>Добавить должность</h3>
+                <p style="text-align: left;">Название должности</p>
+                <form method="post">
+                    <input name="position" placeholder="DevOps" required><br>
+                    <button onclick="Submit">Добавить</button>
+                </form>
+            </th>
+        </tr>
+    </table>
+</div>
+{% endif %}
+</body>
+
+<script>
+
+    function new_info(butt) {
+      let table = butt.parentElement.parentElement.parentElement;
+      let row_num = table.rows.length - 1;
+      let row = table.insertRow(row_num);
+      let cell1 = row.insertCell(0);
+      let cell2 = row.insertCell(1);
+      let cell3 = row.insertCell(2);
+      cell1.outerHTML='<th style="width:80px"><button onclick="del_info(this)" type="button">-</button></th>'
+
+      cell2.outerHTML='<th style="width:40%;"><textarea style="resize:vertical;width:100%;height:100%;" name="' + row_num + '" \
+       rows="5" cols="90">Новая запись</textarea><select name="' + row_num + 'f">\
+                    <option value="-1">Файл не выбран</option>\
+                    {%for c_f in range(0, all_files|length) %}\
+                    <option value="{{all_files[c_f][0]}}"> {{all_files[c_f][1]}} </option>\
+                    {%endfor%}\
+                </select>'
+
+      cell3.outerHTML='<th><table><th style="width:80px" align="left"><button onclick="del_question(this)" type="button">-</button></th>\
+      <th align="left"><textarea style="resize:vertical;width:100%" name="' + row_num + '_0" rows="3" cols="30">Новый вопрос</textarea></th>\
+      <th><table style="table;border=1px"><tr align="left">\
+      <th style="width:80px"><button onclick="del_answer(this)" type="button">-</button></th>\
+      <th style="width:65%"><textarea style="resize:vertical;width:100%" name="' + row_num + '_0_0" rows="2" cols="30">Новый ответ</textarea></th>\
+      <th><input type="checkbox" name="' + row_num + '_0_0_1"></th></tr>\
+      <tr><th style="width:80px" align="left"><button onclick="new_answer(this)" type="button">+</button></th><th></th><th></th></tr>\
+      </table></th>\
+      <tr><th style="width:80px"><button onclick="new_question(this)" type="button">+</button></th><th></th><th></th></tr>\
+      </table></th>'
+
+    }
+    function del_info(butt) {
+      let row = butt.parentElement.parentElement;
+      row.remove();
+    }
+    function del_file(butt) {
+      let row = butt.parentElement.parentElement;
+      row.remove();
+    }
+
+    function new_question(butt) {
+      let th = butt.parentElement.parentElement.parentElement.parentElement.parentElement;
+      let cur_row = th.parentNode;
+      let cur_row_i = cur_row.rowIndex;
+
+      let table = butt.parentElement.parentElement.parentElement;
+      let row_num = table.rows.length - 1;
+      let row = table.insertRow(row_num);
+      let cell1 = row.insertCell(0);
+      let cell2 = row.insertCell(1);
+      let cell3 = row.insertCell(2);
+
+      cell1.outerHTML='<th style="width:80px" align="left"><button onclick="del_question(this)" type="button">-</button></th>';
+      cell2.outerHTML='<th align="left"><textarea style="resize:vertical;width:100%" name="' + cur_row_i + '_' + row_num + '" rows="3" cols="30">Новый вопрос</textarea></th>';
+
+      cell3.outerHTML='<th><table style="table;border=1px"><tr align="left">\
+      <th style="width:80px" align="left"><button onclick="del_answer(this)" type="button">-</button></th>\
+      <th style="width:65%"><textarea style="resize:vertical;width:100%" name="' + cur_row_i + '_' + row_num + '_0" rows="2" cols="30">Новый ответ</textarea></th>\
+      <th><input type="checkbox" name="' + cur_row_i + '_' + row_num + '_0_1"></th></tr>\
+      <tr><th style="width:80px" align="left"><button onclick="new_answer(this)" type="button">+</button></th><th></th><th></th></tr>\
+      </table></th>'
+    }
+    function del_question(butt) {
+      let row = butt.parentElement.parentElement;
+      row.remove();
+    }
+
+    function new_answer(butt) {
+      let th = butt.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+      let cur_row_i = th.rowIndex;
+
+      let th1 = butt.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+      let cur_row1_i = th1.rowIndex;
+
+      let table = butt.parentElement.parentElement.parentElement;
+      let row_num = table.rows.length - 1;
+      let row = table.insertRow(row_num);
+      let cell1 = row.insertCell(0);
+      let cell2 = row.insertCell(1);
+      let cell3 = row.insertCell(2);
+      cell1.outerHTML='<th style="width:80px" align="left"><button onclick="del_answer(this)" type="button">-</button></th>';
+      cell2.outerHTML='<th style="width:65%"><textarea style="resize:vertical;width:100%" name="' + cur_row_i + '_' + cur_row1_i + '_' + row_num +'" rows="2" cols="30">Новый ответ</textarea></th>';
+      cell3.outerHTML='<th><input type="checkbox" name="' + cur_row_i + '_' + cur_row1_i + '_' + row_num +'_1"></th>'
+    }
+    function del_answer(butt) {
+      let row = butt.parentElement.parentElement;
+      row.remove();
+    }
+
+
+</script>
+
+</html>

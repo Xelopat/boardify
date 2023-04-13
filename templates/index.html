@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title>Boardify</title>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+{% if message %}
+
+<div id="customAlert">
+  <div id="customAlertBox">
+    <div id="customAlertTitle"></div>
+    <div id="customAlertText"></div>
+    <div id="customAlertButton" onclick="closeCustomAlert()">OK</div>
+  </div>
+</div>
+<script>
+    history.pushState({}, '', window.location.pathname);
+    showAlert("{{ message[0] }}", "{{ message[1] }}");
+</script>
+{% endif %}
+<div  style="width:40%;margin: 0 auto;text-align: center;margin-top:10%">
+    {% if admin_company %}
+    <h1>Компания {{ admin_company }}</h1>
+    {% endif %}
+    {% if not is_entered %}
+    <a href="/registration">Регистрация</a>
+    <a href="/login">Вход</a>
+    {% else %}
+    {% if not admin_company %}
+    <a href="/create_company">Создать компанию</a>
+    <a href="/join_company">Присоединиться к компании</a>
+    {% else %}
+    <table style="width:75%;height:80px;border:0px;margin: auto">
+        <tr style="border:0;">
+            <th style="border:0;">
+                <a href="/employers" style="width:250px;margin-top=0px">Сотрудники</a>
+            </th>
+            <th style="border:0;">
+                <a href="/links" style="width:250px;margin-top=0px">Ссылки сотрудникам</a><br>
+            </th>
+        </tr>
+        <tr style="border:0;">
+            <th style="border:0;">
+                <a href="/mailing" style="width:250px;margin-top=0px">Рассылка</a>
+            </th>
+            <th style="border:0;">
+                <a href="/options" style="width:250px;margin-top=0px">Настройки</a>
+            </th>
+        </tr>
+    </table>
+    <a href="/upload" style="width:250px;margin-top=0px">Загрузка файлов</a>
+    {% endif %}
+    {% endif %}
+</div>
+</body>
+</html>
